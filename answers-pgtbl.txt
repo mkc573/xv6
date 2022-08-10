@@ -1,0 +1,15 @@
+//speed up fork()
+
+/* kernel/memlayout.h */
+...
+struct usyscall {
+  int pid;  // Process ID
+  struct proc *parent  // Parent process 
+};
+
+
+
+//page0: date and text of process
+//page1: guard page for protect stack by present page0 overflow
+//page2: stack of process
+//page3 to last page: heap, trapfram, trampoline
