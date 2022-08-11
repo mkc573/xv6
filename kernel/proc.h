@@ -1,3 +1,9 @@
+#define USYSCALL (TRAPFRAME - PGSIZE)  // USYSCALl = 3FFFFFD000
+
+struct usyscall {
+    int pid;  // Process ID
+};
+
 // Saved registers for kernel context switches.
 struct context {
   uint64 ra;
@@ -101,8 +107,48 @@ struct proc {
   uint64 sz;                   // Size of process memory (bytes)
   pagetable_t pagetable;       // User page table
   struct trapframe *trapframe; // data page for trampoline.S
+  struct usyscall *usyscall;          //add a struct
   struct context context;      // swtch() here to run process
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  int ticks;
+  int ticks_cnt;
+  
+  uint64 handler;
+  int handler_executing;
+  
+  uint64 tick_epc; 
+  
+  /*  40 */ uint64 tick_ra;
+  /*  48 */ uint64 tick_sp;
+  /*  56 */ uint64 tick_gp;
+  /*  64 */ uint64 tick_tp;
+  /*  72 */ uint64 tick_t0;
+  /*  80 */ uint64 tick_t1;
+  /*  88 */ uint64 tick_t2;
+  /*  96 */ uint64 tick_s0;
+  /* 104 */ uint64 tick_s1;
+  /* 112 */ uint64 tick_a0;
+  /* 120 */ uint64 tick_a1;
+  /* 128 */ uint64 tick_a2;
+  /* 136 */ uint64 tick_a3;
+  /* 144 */ uint64 tick_a4;
+  /* 152 */ uint64 tick_a5;
+  /* 160 */ uint64 tick_a6;
+  /* 168 */ uint64 tick_a7;
+  /* 176 */ uint64 tick_s2;
+  /* 184 */ uint64 tick_s3;
+  /* 192 */ uint64 tick_s4;
+  /* 200 */ uint64 tick_s5;
+  /* 208 */ uint64 tick_s6;
+  /* 216 */ uint64 tick_s7;
+  /* 224 */ uint64 tick_s8;
+  /* 232 */ uint64 tick_s9;
+  /* 240 */ uint64 tick_s10;
+  /* 248 */ uint64 tick_s11;
+  /* 256 */ uint64 tick_t3;
+  /* 264 */ uint64 tick_t4;
+  /* 272 */ uint64 tick_t5;
+  /* 280 */ uint64 tick_t6;
 };
